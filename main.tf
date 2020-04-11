@@ -42,7 +42,7 @@ resource "random_shuffle" "random_subnet" {
 
 
 resource "aws_elb" "web" {
-  name = "hackton-elb"
+  name = "${format("elb-%s", terraform.workspace)}"
 
   subnets         = data.aws_subnet_ids.all.ids
   security_groups = ["${aws_security_group.allow-ssh.id}"]
@@ -64,6 +64,10 @@ resource "aws_elb" "web" {
 
   # The instances are registered automatically
   instances = aws_instance.web.*.id
+  
+  tags = {
+    Name = "${format("elb-%s", terraform.workspace)}"
+  }
 }
 
 resource "aws_instance" "web" {
@@ -95,7 +99,8 @@ resource "aws_instance" "web" {
     host = "${self.public_dns}"
   }
 
+
   tags = {
-    Name = "${format("nginx-hackathon-%03d", count.index + 1)}"
+    Name = "${format("nginx-%s-%03d", terraform.workspace, count.index + 1)}"
   }
 }
