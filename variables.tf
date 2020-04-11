@@ -24,5 +24,5 @@ variable "INSTANCE_USERNAME" {
 variable "ECR_REGISTRY" {
 }
 variable "bucket_workspace" {
-  default = "${format("linkteen-333563-%s", terraform.workspace)}"
+#  default = "${format("linkteen-333563-%s", terraform.workspace)}"
 }
