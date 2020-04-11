@@ -16,13 +16,14 @@ phases:
     commands:
       - login=$(aws ecr get-login --region=us-east-1)
       - login=$(echo $login | sed 's/-e none/ /g' | tee)
-      - echo $login | bash
+      - echo $login | bash      
   build:
     commands:
       - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage"
       - $dockerterraform init 
-      - branch='git rev-parse --abbrev-ref HEAD'
-      - $dockerterraform workspace select $Branch || $dockerterraform workspace new $Branch
+      - branch=$(git rev-parse --abbrev-ref HEAD)
+      - $dockerterraform workspace select $BRANCH || $dockerterraform workspace new $Branch
+      - $dockerterraform workspace select $STAGE || $dockerterraform workspace new $STAGE
       - $dockerterraform destroy -var ECR_REGISTRY="${REPOSITORY_URI}" -auto-approve
       - $dockerterraform plan -var ECR_REGISTRY="${REPOSITORY_URI}" -out plan.out
       - $dockerterraform apply -var ECR_REGISTRY="${REPOSITORY_URI}" -auto-approve
