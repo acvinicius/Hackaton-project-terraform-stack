@@ -10,6 +10,7 @@ phases:
       - docker pull $terraformImage
       - PROJ_NAME="$PROJECT_NAME"
       - REPOSITORY_URI="$ECR_ADDRESS"
+      - echo $bucket_workspace
       - mkdir .aws && aws s3 cp s3://$bucket_workspace/instance-need/.aws/credentials .aws/ && aws s3 cp s3://$bucket_workspace/instance-need/.aws/config .aws/
       - mkdir .ssh && aws s3 cp s3://$bucket_workspace/instance-need/.ssh/fiap-lab.pem .ssh/ 
   pre_build:
