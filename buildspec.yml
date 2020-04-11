@@ -16,7 +16,7 @@ phases:
     commands:
       - login=$(aws ecr get-login --region=us-east-1)
       - login=$(echo $login | sed 's/-e none/ /g' | tee)
-      - echo $login | bash      
+      - echo $login | bash
   build:
     commands:
       - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage"
