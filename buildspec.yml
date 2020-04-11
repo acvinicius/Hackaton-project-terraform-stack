@@ -19,9 +19,8 @@ phases:
       - echo $login | bash      
   build:
     commands:
-      - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage"
+      - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage branch=$(git rev-parse --abbrev-ref HEAD)"
       - $dockerterraform init 
-      - branch=$(git rev-parse --abbrev-ref HEAD)
       - $dockerterraform workspace select $Branch || $dockerterraform workspace new $Branch
       - $dockerterraform destroy -var ECR_REGISTRY="${REPOSITORY_URI}" -auto-approve
       - $dockerterraform plan -var ECR_REGISTRY="${REPOSITORY_URI}" -out plan.out
