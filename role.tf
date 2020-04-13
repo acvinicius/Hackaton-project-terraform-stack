@@ -22,7 +22,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ecr_readOnly_profile" {
-  name = "${format("ecr_readOnly_profile__%s", terraform.workspace)}"
+  name = "${format("ecr_readOnly_profile_%s", terraform.workspace)}"
   role = "${aws_iam_role.ecr_readOnly_role.name}"
 }
 
