@@ -1,6 +1,6 @@
 resource "aws_security_group" "allow-ssh" {
   vpc_id      = "${data.aws_vpc.vpc.id}"
-  name_prefix = terraform.workspace
+  name_prefix = "${format("%s_", terraform.workspace)}"
 
   egress {
     from_port   = 0
