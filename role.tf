@@ -1,6 +1,5 @@
 resource "aws_iam_role"  "ecr_readOnly_role" {
-  count = 1
-  name = "${format("ecr_readOnly_role_%s_%03d", terraform.workspace, count.index + 1)}"
+  name = "${format("ecr_readOnly_role_%s_%s", terraform.workspace, terraform.tag)}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -18,19 +17,17 @@ resource "aws_iam_role"  "ecr_readOnly_role" {
 EOF
 
   tags = {
-      Name = "${format("ecr_readOnly_role_%s_%03d", terraform.workspace, count.index + 1)}"
+      Name = "${format("ecr_readOnly_role_%s_%s", terraform.workspace, terraform.tag)}"
   }
 }
 
 resource "aws_iam_instance_profile" "ecr_readOnly_profile" {
-  count = 1
-  name = "${format("ecr_readOnly_profile_%s_%03d", terraform.workspace, count.index + 1)}"
+  name = "${format("ecr_readOnly_profile_%s_%s", terraform.workspace, terraform.tag)}"
   role = "${aws_iam_role.ecr_readOnly_role.name}"
 }
 
 resource "aws_iam_role_policy" "ecr_readOnly_policy" {
-  count = 1
-  name = "${format("ecr_readOnly_policy_%s_%03d", terraform.workspace, count.index + 1)}"
+  name = "${format("ecr_readOnly_policy_%s_%s", terraform.workspace, terraform.tag)}"
   role = "${aws_iam_role.ecr_readOnly_role.id}"
 
   policy = <<EOF
