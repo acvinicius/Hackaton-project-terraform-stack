@@ -9,6 +9,7 @@ phases:
       - terraformImage="hashicorp/terraform:0.12.23"
       - docker pull $terraformImage
       - PROJ_NAME="$PROJECT_NAME"
+      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
       - REPOSITORY_URI="$ECR_ADDRESS":$TAG
       - echo $PROJECT_NAME $ECR_ADDRESS $TAG $REPOSITORY_URI
       - mkdir .aws && aws s3 cp s3://linkteen-333563-$STAGE/instance-need/.aws/credentials .aws/ && aws s3 cp s3://linkteen-333563-$STAGE/instance-need/.aws/config .aws/
